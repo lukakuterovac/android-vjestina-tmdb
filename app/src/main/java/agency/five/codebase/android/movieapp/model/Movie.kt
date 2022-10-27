@@ -5,5 +5,5 @@ data class Movie(
     val title: String,
     val overview: String,
     val imageUrl: String?,
-    val isFavorite: Boolean,
+    var isFavorite: Boolean,
 )
