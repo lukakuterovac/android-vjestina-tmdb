@@ -20,7 +20,7 @@ fun FavoriteButton(
     onClick: () -> Unit,
 ) {
     Image(
-        painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite),
+        painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_outlined),
         contentDescription = null,
         modifier = modifier
             .clickable { onClick() }

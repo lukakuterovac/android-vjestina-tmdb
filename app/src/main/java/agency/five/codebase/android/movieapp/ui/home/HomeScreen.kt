@@ -15,6 +15,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +55,25 @@ var upcomingCategoryViewState = homeScreenMapper.toHomeMovieCategoryViewState(
     movies = movies,
     movieCategories = upcoming, selectedMovieCategory = MovieCategory.UPCOMING_TODAY
 )
+
+@Composable
+fun HomeRoute(
+    onMovieCardClick: () -> Unit,
+    onFavoriteButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val popularCategoryViewState by remember { mutableStateOf(popularCategoryViewState) }
+    val nowPlayingCategoryViewState by remember { mutableStateOf(nowPlayingCategoryViewState) }
+    val upcomingCategoryViewState by remember { mutableStateOf(upcomingCategoryViewState) }
+    HomeScreen(
+        popular = popularCategoryViewState,
+        nowPlaying = nowPlayingCategoryViewState,
+        upcoming = upcomingCategoryViewState,
+        onMovieCardClick = { onMovieCardClick() },
+        onFavoriteButtonClick = { onFavoriteButtonClick() },
+        modifier = modifier
+    )
+}
 
 @Composable
 fun HomeScreen(
