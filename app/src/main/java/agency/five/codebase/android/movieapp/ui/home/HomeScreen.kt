@@ -144,7 +144,7 @@ fun HomeScreenPart(
     modifier: Modifier,
 ) {
     Column(
-        modifier = modifier.padding(MaterialTheme.spacing.small)
+        modifier = modifier
     ) {
         Text(
             text = title,
@@ -154,8 +154,7 @@ fun HomeScreenPart(
         )
         LazyRow(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = MaterialTheme.spacing.small),
+                .fillMaxWidth(),
         ) {
             items(
                 items = viewState.movieCategories,
@@ -174,8 +173,7 @@ fun HomeScreenPart(
         }
         LazyRow(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.small),
+                .fillMaxWidth(),
         ) {
             items(
                 items = viewState.movies,

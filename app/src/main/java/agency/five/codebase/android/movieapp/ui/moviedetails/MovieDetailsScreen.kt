@@ -130,7 +130,10 @@ fun MovieImage(
             Text(
                 text = movieDetailsViewState.title,
                 modifier = Modifier
-                    .padding(horizontal = MaterialTheme.spacing.small, vertical = MaterialTheme.spacing.medium),
+                    .padding(
+                        horizontal = MaterialTheme.spacing.small,
+                        vertical = MaterialTheme.spacing.medium
+                    ),
                 color = colorResource(id = R.color.white),
                 fontSize = 20.sp
             )
@@ -177,7 +180,8 @@ fun MovieCrewGrid(
     LazyHorizontalGrid(
         rows = GridCells.Fixed(2),
         modifier = modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceBetween,
+        contentPadding = PaddingValues(MaterialTheme.spacing.medium)
     ) {
         itemsIndexed(movieDetailsViewState.crew) { index, _ ->
             CrewItem(

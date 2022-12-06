@@ -7,7 +7,7 @@
     <dimen name="topbar_logo_vertical_padding">10dp</dimen>
     <dimen name="back_icon_size">40dp</dimen>
     <dimen name="movie_details_image_height">300dp</dimen>
-    <dimen name="movie_details_crew_grid_height">100dp</dimen>
+    <dimen name="movie_details_crew_grid_height">130dp</dimen>
     <dimen name="actor_card_height">200dp</dimen>
     <dimen name="actor_card_wdith">140dp</dimen>
 </resources>

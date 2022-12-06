@@ -28,7 +28,7 @@ private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
 
 val favoritesViewState = favoritesMapper.toFavoritesViewState(MoviesMock.getMoviesList())
 
-const val columnCount = 3
+private const val COLUMN_COUNT = 3
 
 @Composable
 fun FavoritesRoute(
@@ -64,7 +64,7 @@ fun FavoritesScreen(
             fontWeight = FontWeight.Bold
         )
         LazyVerticalGrid(
-            columns = GridCells.Fixed(columnCount),
+            columns = GridCells.Fixed(COLUMN_COUNT),
             content = {
                 items(
                     items = favoritesViewState.favoriteMovies,
