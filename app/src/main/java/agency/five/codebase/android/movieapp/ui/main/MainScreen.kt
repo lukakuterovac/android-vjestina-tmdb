@@ -12,10 +12,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,8 +39,16 @@ import coil.compose.AsyncImage
 fun MainScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    var showBottomBar by remember { mutableStateOf(true) }
-    var showBackIcon = !showBottomBar
+    val showBottomBar by remember {
+        derivedStateOf {
+            when (navBackStackEntry?.destination?.route) {
+                NavigationItem.HomeDestination.route,
+                NavigationItem.FavoritesDestination.route -> true
+                else -> false
+            }
+        }
+    }
+    val showBackIcon = !showBottomBar
     Scaffold(
         topBar = {
             TopBar(
@@ -44,7 +56,6 @@ fun MainScreen() {
                     if (showBackIcon) {
                         BackIcon(onBackClick = {
                             navController.popBackStack()
-                            showBottomBar = !showBottomBar
                         })
                     }
                 }
@@ -81,9 +92,8 @@ fun MainScreen() {
                     HomeRoute(
                         onMovieCardClick = {
                             navController.navigate(
-                                MovieDetailsDestination.createNavigationRoute(1)
+                                MovieDetailsDestination.createNavigationRoute(it.id.toInt())
                             )
-                            showBottomBar = !showBottomBar
                         },
                         onFavoriteButtonClick = {}
                     )
@@ -92,9 +102,8 @@ fun MainScreen() {
                     FavoritesRoute(
                         onMovieCardClick = {
                             navController.navigate(
-                                MovieDetailsDestination.createNavigationRoute(1)
+                                MovieDetailsDestination.createNavigationRoute(it.id.toInt())
                             )
-                            showBottomBar = !showBottomBar
                         },
                         onFavoriteButtonClick = {},
                     )
@@ -120,12 +129,10 @@ private fun TopBar(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color(R.color.topbar_background))
-            .height(50.dp)
+            .height(dimensionResource(id = R.dimen.topbar_logo_height))
             .padding(
-                start = 70.dp,
-                end = 70.dp,
-                top = 10.dp,
-                bottom = 10.dp
+                horizontal = dimensionResource(id = R.dimen.topbar_logo_horizontal_padding),
+                vertical = dimensionResource(id = R.dimen.topbar_logo_vertical_padding)
             )
     )
     if (navigationIcon != null) {
@@ -173,6 +180,9 @@ fun RowScope.AddItem(
     onNavigateToDestination: (NavigationItem) -> Unit,
     currentDestination: NavDestination?,
 ) {
+    val routeEqualsDestination = currentDestination?.hierarchy?.any {
+        it.route == destination.route
+    } == true
     BottomNavigationItem(
         modifier = Modifier,
         label = {
@@ -186,9 +196,7 @@ fun RowScope.AddItem(
                 modifier = Modifier.fillMaxHeight(0.25F),
                 painter = painterResource(
                     id =
-                    if (currentDestination?.hierarchy?.any {
-                            it.route == destination.route
-                        } == true)
+                    if (routeEqualsDestination)
                         destination.selectedIconId
                     else
                         destination.unselectedIconId
@@ -197,7 +205,7 @@ fun RowScope.AddItem(
                 contentScale = ContentScale.FillHeight
             )
         },
-        selected = currentDestination?.route == destination.route,
+        selected = routeEqualsDestination,
         onClick = { onNavigateToDestination(destination) }
     )
 }
