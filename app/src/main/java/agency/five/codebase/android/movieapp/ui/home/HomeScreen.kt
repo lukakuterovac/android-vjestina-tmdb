@@ -146,18 +146,18 @@ fun HomeScreenPart(
     modifier: Modifier,
 ) {
     Column(
-        modifier = modifier.padding(10.dp)
+        modifier = modifier.padding(MaterialTheme.spacing.small)
     ) {
         Text(
             text = title,
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(MaterialTheme.spacing.small),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 10.dp),
+                .padding(start = MaterialTheme.spacing.small),
         ) {
             items(
                 items = viewState.movieCategories,
@@ -166,7 +166,7 @@ fun HomeScreenPart(
                 }
             ) {
                 MovieCategoryLabel(
-                    modifier = Modifier.padding(end = 10.dp),
+                    modifier = Modifier.padding(end = MaterialTheme.spacing.small),
                     labelViewState = it,
                     onClick = {
                         onCategoryClick(it.itemId)
@@ -189,7 +189,7 @@ fun HomeScreenPart(
                     modifier = Modifier
                         .width(dimensionResource(id = R.dimen.movie_card_width))
                         .height(dimensionResource(id = R.dimen.movie_card_height))
-                        .padding(5.dp),
+                        .padding(MaterialTheme.spacing.extraSmall),
                     movieCardViewState = MovieCardViewState(
                         item.imageUrl,
                         item.isFavorite
@@ -212,7 +212,6 @@ private fun mapToViewState(
         movies = MoviesMock.getMoviesList()
     )
 }
-
 
 @Preview
 @Composable

@@ -7,6 +7,7 @@ import agency.five.codebase.android.movieapp.navigation.NavigationItem
 import agency.five.codebase.android.movieapp.ui.favorites.FavoritesRoute
 import agency.five.codebase.android.movieapp.ui.home.HomeRoute
 import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsRoute
+import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -149,8 +150,8 @@ private fun BackIcon(
         model = R.drawable.ic_back,
         contentDescription = null,
         modifier = modifier
-            .size(40.dp)
-            .padding(top = 12.dp, start = 5.dp)
+            .size(dimensionResource(id = R.dimen.back_icon_size))
+            .padding(top = MaterialTheme.spacing.small, start = MaterialTheme.spacing.extraSmall)
             .clickable { onBackClick() }
     )
 }

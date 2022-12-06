@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,7 +69,7 @@ fun MovieDetailsScreen(
         MovieImage(
             movieDetailsViewState = movieDetailsViewState,
             onFavoriteButtonClick = onFavoriteButtonClick,
-            modifier = Modifier.height(300.dp)
+            modifier = Modifier.height(dimensionResource(id = R.dimen.movie_details_image_height))
         )
         MovieOverview(
             movieDetailsViewState = movieDetailsViewState,
@@ -76,7 +77,7 @@ fun MovieDetailsScreen(
         )
         MovieCrewGrid(
             movieDetailsViewState = movieDetailsViewState,
-            modifier = Modifier.height(100.dp)
+            modifier = Modifier.height(dimensionResource(id = R.dimen.movie_details_crew_grid_height))
         )
         MovieCast(
             movieDetailsViewState = movieDetailsViewState,
@@ -84,6 +85,8 @@ fun MovieDetailsScreen(
         )
     }
 }
+
+private const val BACKGROUND_TRANSPARENCY = 0.75F
 
 @Composable
 fun MovieImage(
@@ -114,7 +117,7 @@ fun MovieImage(
                 UserScoreProgressBar(
                     score = movieDetailsViewState.voteAverage,
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(MaterialTheme.spacing.small)
                         .size(50.dp)
                 )
                 Text(
@@ -127,7 +130,7 @@ fun MovieImage(
             Text(
                 text = movieDetailsViewState.title,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 15.dp),
+                    .padding(horizontal = MaterialTheme.spacing.small, vertical = MaterialTheme.spacing.medium),
                 color = colorResource(id = R.color.white),
                 fontSize = 20.sp
             )
@@ -135,7 +138,7 @@ fun MovieImage(
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.medium)
                     .background(
-                        Color.Gray.copy(0.75f),
+                        Color.Gray.copy(BACKGROUND_TRANSPARENCY),
                         shape = CircleShape
                     )
                     .size(40.dp),
@@ -154,13 +157,13 @@ fun MovieOverview(
     Column(modifier = modifier) {
         Text(
             text = stringResource(id = R.string.overview),
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(MaterialTheme.spacing.extraSmall),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
         Text(
             text = movieDetailsViewState.overview,
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier.padding(MaterialTheme.spacing.extraSmall),
             fontSize = 15.sp
         )
     }
@@ -192,7 +195,7 @@ fun MovieCast(
 ) {
     Text(
         text = stringResource(id = R.string.top_billed_cast),
-        modifier = Modifier.padding(5.dp),
+        modifier = Modifier.padding(MaterialTheme.spacing.extraSmall),
         fontSize = 30.sp,
         fontWeight = FontWeight.Bold
     )
@@ -201,9 +204,9 @@ fun MovieCast(
             ActorCard(
                 actorCardViewState = movieDetailsViewState.cast[index],
                 modifier = Modifier
-                    .width(140.dp)
-                    .height(200.dp)
-                    .padding(5.dp)
+                    .width(dimensionResource(id = R.dimen.actor_card_wdith))
+                    .height(dimensionResource(id = R.dimen.actor_card_height))
+                    .padding(MaterialTheme.spacing.extraSmall)
             )
         }
     }
