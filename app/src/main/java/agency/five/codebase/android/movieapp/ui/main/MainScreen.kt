@@ -93,7 +93,7 @@ fun MainScreen() {
                     HomeRoute(
                         onMovieCardClick = {
                             navController.navigate(
-                                MovieDetailsDestination.createNavigationRoute(it.id.toInt())
+                                MovieDetailsDestination.createNavigationRoute(it)
                             )
                         },
                         onFavoriteButtonClick = {}
@@ -103,7 +103,7 @@ fun MainScreen() {
                     FavoritesRoute(
                         onMovieCardClick = {
                             navController.navigate(
-                                MovieDetailsDestination.createNavigationRoute(it.id.toInt())
+                                MovieDetailsDestination.createNavigationRoute(it)
                             )
                         },
                         onFavoriteButtonClick = {},

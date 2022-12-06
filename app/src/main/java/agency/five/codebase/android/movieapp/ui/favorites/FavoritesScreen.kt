@@ -33,7 +33,7 @@ const val columnCount = 3
 @Composable
 fun FavoritesRoute(
     onFavoriteButtonClick: () -> Unit,
-    onMovieCardClick: () -> Unit
+    onMovieCardClick: (Int) -> Unit
 ) {
     val favorites by remember { mutableStateOf(favoritesViewState) }
     FavoritesScreen(
@@ -50,7 +50,7 @@ fun FavoritesRoute(
 fun FavoritesScreen(
     favoritesViewState: FavoritesViewState,
     onFavoriteButtonClick: () -> Unit,
-    onMovieCardClick: () -> Unit,
+    onMovieCardClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -77,7 +77,7 @@ fun FavoritesScreen(
                             .padding(MaterialTheme.spacing.small),
                         movieCardViewState = card.movieViewState,
                         onFavoriteButtonClick = onFavoriteButtonClick,
-                        onClick = onMovieCardClick
+                        onClick = { onMovieCardClick(card.id) }
                     )
                 }
             }

@@ -21,7 +21,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val homeScreenMapper: HomeScreenMapper = HomeScreenMapperImpl()
@@ -60,8 +59,8 @@ val upcomingCategoryViewState = homeScreenMapper.toHomeMovieCategoryViewState(
 
 @Composable
 fun HomeRoute(
-    onMovieCardClick: () -> Unit,
-    onFavoriteButtonClick: () -> Unit,
+    onMovieCardClick: (Int) -> Unit,
+    onFavoriteButtonClick: () -> Unit
 ) {
     var popularCategoryViewState by remember { mutableStateOf(popularCategoryViewState) }
     var nowPlayingCategoryViewState by remember { mutableStateOf(nowPlayingCategoryViewState) }
@@ -99,37 +98,36 @@ fun HomeScreen(
     popular: HomeMovieCategoryViewState,
     nowPlaying: HomeMovieCategoryViewState,
     upcoming: HomeMovieCategoryViewState,
-    onMovieCardClick: () -> Unit,
+    onMovieCardClick: (Int) -> Unit,
     onFavoriteButtonClick: () -> Unit,
     onCategoryClick: (Int) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxHeight()
+        modifier = Modifier.fillMaxHeight()
     ) {
         item {
             HomeScreenPart(
                 viewState = popular,
                 title = stringResource(id = R.string.whats_popular),
                 modifier = Modifier,
-                onMovieCardClick = { onMovieCardClick() },
-                onFavoriteButtonClick = { onFavoriteButtonClick() },
+                onMovieCardClick = onMovieCardClick,
+                onFavoriteButtonClick = onFavoriteButtonClick,
                 onCategoryClick = onCategoryClick
             )
             HomeScreenPart(
                 viewState = nowPlaying,
                 title = stringResource(id = R.string.now_playing),
                 modifier = Modifier,
-                onMovieCardClick = { onMovieCardClick() },
-                onFavoriteButtonClick = { onFavoriteButtonClick() },
+                onMovieCardClick = onMovieCardClick,
+                onFavoriteButtonClick = onFavoriteButtonClick,
                 onCategoryClick = onCategoryClick
             )
             HomeScreenPart(
                 viewState = upcoming,
                 title = stringResource(id = R.string.upcoming),
                 modifier = Modifier,
-                onMovieCardClick = { onMovieCardClick() },
-                onFavoriteButtonClick = { onFavoriteButtonClick() },
+                onMovieCardClick = onMovieCardClick,
+                onFavoriteButtonClick = onFavoriteButtonClick,
                 onCategoryClick = onCategoryClick
             )
         }
@@ -140,7 +138,7 @@ fun HomeScreen(
 fun HomeScreenPart(
     viewState: HomeMovieCategoryViewState,
     title: String,
-    onMovieCardClick: () -> Unit,
+    onMovieCardClick: (Int) -> Unit,
     onFavoriteButtonClick: () -> Unit,
     onCategoryClick: (Int) -> Unit,
     modifier: Modifier,
@@ -195,7 +193,7 @@ fun HomeScreenPart(
                         item.isFavorite
                     ),
                     onFavoriteButtonClick = onFavoriteButtonClick,
-                    onClick = onMovieCardClick
+                    onClick = { onMovieCardClick(item.id) }
                 )
             }
         }
