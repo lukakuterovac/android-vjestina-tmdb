@@ -53,7 +53,7 @@ fun UserScoreProgressBar(
         }
         Text(
             text = (score * PERCENTAGE_FACTOR).toString(),
-            color = Color.Black,
+            color = Color.White,
             fontSize = 15.sp,
             modifier = Modifier
                 .align(Alignment.Center)
