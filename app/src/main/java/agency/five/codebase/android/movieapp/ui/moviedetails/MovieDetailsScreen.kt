@@ -1,13 +1,10 @@
 package agency.five.codebase.android.movieapp.ui.moviedetails
 
 import agency.five.codebase.android.movieapp.R
-import agency.five.codebase.android.movieapp.mock.MoviesMock
 import agency.five.codebase.android.movieapp.ui.component.ActorCard
 import agency.five.codebase.android.movieapp.ui.component.CrewItem
 import agency.five.codebase.android.movieapp.ui.component.FavoriteButton
 import agency.five.codebase.android.movieapp.ui.component.UserScoreProgressBar
-import agency.five.codebase.android.movieapp.ui.moviedetails.mapper.MovieDetailsMapper
-import agency.five.codebase.android.movieapp.ui.moviedetails.mapper.MovieDetailsMapperImpl
 import agency.five.codebase.android.movieapp.ui.theme.MovieAppTheme
 import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.background
@@ -22,10 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,17 +33,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
-private val detailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
-
-val movieDetailsViewState = detailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
-
 @Composable
 fun MovieDetailsRoute(
+    viewModel: MovieDetailsViewModel
 ) {
-    val movieDetailsViewState by remember { mutableStateOf(movieDetailsViewState) }
+    val movieDetailsViewState: MovieDetailsViewState by viewModel.movieDetailsViewState.collectAsState()
     MovieDetailsScreen(
         movieDetailsViewState = movieDetailsViewState,
-        onFavoriteButtonClick = { },
+        onFavoriteButtonClick = {
+            viewModel.toggleFavorite(movieDetailsViewState.id)
+        },
         modifier = Modifier
     )
 }
@@ -81,7 +74,6 @@ fun MovieDetailsScreen(
         )
         MovieCast(
             movieDetailsViewState = movieDetailsViewState,
-            modifier = Modifier
         )
     }
 }
@@ -195,7 +187,6 @@ fun MovieCrewGrid(
 @Composable
 fun MovieCast(
     movieDetailsViewState: MovieDetailsViewState,
-    modifier: Modifier
 ) {
     Text(
         text = stringResource(id = R.string.top_billed_cast),
@@ -221,7 +212,7 @@ fun MovieCast(
 fun MovieDetailsScreenPreview() {
     MovieAppTheme {
         MovieDetailsScreen(
-            movieDetailsViewState = movieDetailsViewState,
+            movieDetailsViewState = MovieDetailsViewState.EMPTY,
             onFavoriteButtonClick = { },
             modifier = Modifier
         )

@@ -5,8 +5,12 @@ import agency.five.codebase.android.movieapp.navigation.MOVIE_ID_KEY
 import agency.five.codebase.android.movieapp.navigation.MovieDetailsDestination
 import agency.five.codebase.android.movieapp.navigation.NavigationItem
 import agency.five.codebase.android.movieapp.ui.favorites.FavoritesRoute
+import agency.five.codebase.android.movieapp.ui.favorites.FavoritesViewModel
 import agency.five.codebase.android.movieapp.ui.home.HomeRoute
+import agency.five.codebase.android.movieapp.ui.home.HomeViewModel
 import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsRoute
+import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsViewModel
+import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsViewState
 import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,7 +28,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -35,6 +38,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.AsyncImage
+import org.koin.androidx.compose.getViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun MainScreen() {
@@ -50,6 +55,8 @@ fun MainScreen() {
         }
     }
     val showBackIcon = !showBottomBar
+    val homeViewModel = getViewModel<HomeViewModel>()
+    val favoritesViewModel = getViewModel<FavoritesViewModel>()
     Scaffold(
         topBar = {
             TopBar(
@@ -96,7 +103,7 @@ fun MainScreen() {
                                 MovieDetailsDestination.createNavigationRoute(it)
                             )
                         },
-                        onFavoriteButtonClick = {}
+                        viewModel = homeViewModel
                     )
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
@@ -106,14 +113,20 @@ fun MainScreen() {
                                 MovieDetailsDestination.createNavigationRoute(it)
                             )
                         },
-                        onFavoriteButtonClick = {},
+                        viewModel = favoritesViewModel
                     )
                 }
                 composable(
                     route = MovieDetailsDestination.route,
                     arguments = listOf(navArgument(MOVIE_ID_KEY) { type = NavType.IntType }),
                 ) {
-                    MovieDetailsRoute()
+                    val movieId = it.arguments?.getInt(MOVIE_ID_KEY) ?: throw IllegalStateException(
+                        "Id is null!"
+                    )
+                    val viewModel = getViewModel<MovieDetailsViewModel>(
+                        parameters = { parametersOf(movieId) }
+                    )
+                    MovieDetailsRoute(viewModel = viewModel)
                 }
             }
         }
