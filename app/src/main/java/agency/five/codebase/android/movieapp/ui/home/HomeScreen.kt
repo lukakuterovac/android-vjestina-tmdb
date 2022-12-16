@@ -19,15 +19,22 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun HomeRoute(
     viewModel: HomeViewModel,
     onMovieCardClick: (Int) -> Unit,
 ) {
-    val upcomingMoviesViewState: HomeMovieCategoryViewState by viewModel.upcomingMoviesHomeViewState.collectAsState()
-    val nowPlayingMoviesViewState: HomeMovieCategoryViewState by viewModel.nowPlayingMoviesHomeViewState.collectAsState()
-    val popularMoviesViewState: HomeMovieCategoryViewState by viewModel.popularMoviesHomeViewState.collectAsState()
+    val upcomingMoviesViewState: HomeMovieCategoryViewState by viewModel.upcomingCategoryViewState.collectAsState(
+        initial = HomeMovieCategoryViewState.EMPTY
+    )
+    val nowPlayingMoviesViewState: HomeMovieCategoryViewState by viewModel.nowPlayingCategoryViewState.collectAsState(
+        initial = HomeMovieCategoryViewState.EMPTY
+    )
+    val popularMoviesViewState: HomeMovieCategoryViewState by viewModel.popularCategoryViewState.collectAsState(
+        initial = HomeMovieCategoryViewState.EMPTY
+    )
 
     HomeScreen(
         popular = popularMoviesViewState,

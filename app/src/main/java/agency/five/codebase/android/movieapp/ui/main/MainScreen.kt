@@ -10,7 +10,6 @@ import agency.five.codebase.android.movieapp.ui.home.HomeRoute
 import agency.five.codebase.android.movieapp.ui.home.HomeViewModel
 import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsRoute
 import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsViewModel
-import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsViewState
 import agency.five.codebase.android.movieapp.ui.theme.spacing
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,8 +54,6 @@ fun MainScreen() {
         }
     }
     val showBackIcon = !showBottomBar
-    val homeViewModel = getViewModel<HomeViewModel>()
-    val favoritesViewModel = getViewModel<FavoritesViewModel>()
     Scaffold(
         topBar = {
             TopBar(
@@ -103,7 +100,7 @@ fun MainScreen() {
                                 MovieDetailsDestination.createNavigationRoute(it)
                             )
                         },
-                        viewModel = homeViewModel
+                        viewModel = getViewModel()
                     )
                 }
                 composable(NavigationItem.FavoritesDestination.route) {
@@ -113,7 +110,7 @@ fun MainScreen() {
                                 MovieDetailsDestination.createNavigationRoute(it)
                             )
                         },
-                        viewModel = favoritesViewModel
+                        viewModel = getViewModel()
                     )
                 }
                 composable(

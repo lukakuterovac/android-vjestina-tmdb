@@ -23,9 +23,9 @@ class FavoritesViewModel(
                 initialValue = FavoritesViewState.EMPTY,
             )
 
-    fun toggleFavorite(movieId: Int) {
+    fun removeFavorite(movieId: Int) {
         viewModelScope.launch {
-            movieRepository.toggleFavorite(movieId)
+            movieRepository.removeMovieFromFavorites(movieId)
         }
     }
 }

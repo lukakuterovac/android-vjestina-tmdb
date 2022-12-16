@@ -34,7 +34,7 @@ fun FavoritesRoute(
             .fillMaxSize()
             .padding(MaterialTheme.spacing.small),
         favoritesViewState = favoritesViewState,
-        onFavoriteButtonClick = { viewModel.toggleFavorite(it) },
+        onFavoriteButtonClick = { viewModel.removeFavorite(it) },
         onMovieCardClick = onMovieCardClick
     )
 }
