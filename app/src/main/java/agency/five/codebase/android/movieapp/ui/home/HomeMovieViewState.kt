@@ -11,4 +11,11 @@ data class HomeMovieViewState(
 data class HomeMovieCategoryViewState(
     val movieCategories: List<MovieCategoryLabelViewState>,
     val movies: List<HomeMovieViewState>
-)
+) {
+    companion object {
+        val EMPTY: HomeMovieCategoryViewState = HomeMovieCategoryViewState(
+            movieCategories = emptyList(),
+            movies = emptyList()
+        )
+    }
+}
