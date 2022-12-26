@@ -2,14 +2,13 @@ package agency.five.codebase.android.movieapp.ui.home
 
 import agency.five.codebase.android.movieapp.data.repository.MovieRepository
 import agency.five.codebase.android.movieapp.model.MovieCategory
-import agency.five.codebase.android.movieapp.ui.favorites.FavoritesViewState
 import agency.five.codebase.android.movieapp.ui.home.mapper.HomeScreenMapper
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+
+private const val STOP_TIMEOUT_MILLIS = 5000L
 
 class HomeViewModel(
     private val movieRepository: MovieRepository,
@@ -39,38 +38,38 @@ class HomeViewModel(
     private val initialHomeMovieCategoryState = HomeMovieCategoryViewState(emptyList(), emptyList())
 
     val popularCategoryViewState = popularSelectedCategory.flatMapLatest { category ->
-        movieRepository.popularMovies(MovieCategory.POPULAR_STREAMING)
+        movieRepository.movies(category)
             .map { movies ->
                 homeScreenMapper.toHomeMovieCategoryViewState(popularCategories, category, movies)
             }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = HomeMovieCategoryViewState.EMPTY,
+                started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+                initialValue = initialHomeMovieCategoryState,
             )
     }
 
     val nowPlayingCategoryViewState = nowPlayingSelectedCategory.flatMapLatest { category ->
-        movieRepository.nowPlayingMovies(MovieCategory.NOW_PLAYING_MOVIES)
+        movieRepository.movies(category)
             .map { movies ->
-                homeScreenMapper.toHomeMovieCategoryViewState(popularCategories, category, movies)
+                homeScreenMapper.toHomeMovieCategoryViewState(nowPlayingCategories, category, movies)
             }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = HomeMovieCategoryViewState.EMPTY,
+                started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+                initialValue = initialHomeMovieCategoryState,
             )
     }
 
     val upcomingCategoryViewState = upcomingSelectedCategory.flatMapLatest { category ->
-        movieRepository.popularMovies(MovieCategory.UPCOMING_TODAY)
+        movieRepository.movies(category)
             .map { movies ->
-                homeScreenMapper.toHomeMovieCategoryViewState(popularCategories, category, movies)
+                homeScreenMapper.toHomeMovieCategoryViewState(upcomingCategories, category, movies)
             }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = HomeMovieCategoryViewState.EMPTY,
+                started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+                initialValue = initialHomeMovieCategoryState,
             )
     }
 
@@ -96,13 +95,9 @@ class HomeViewModel(
                 nowPlayingSelectedCategory.update { MovieCategory.values()[categoryId] }
             }
 
-            MovieCategory.UPCOMING_TODAY.ordinal,
-            MovieCategory.UPCOMING_THIS_WEEK.ordinal
-            -> {
+            else -> {
                 upcomingSelectedCategory.update { MovieCategory.values()[categoryId] }
             }
-
-            else -> throw IllegalStateException()
         }
     }
 }

@@ -19,7 +19,7 @@ class FavoritesViewModel(
             .map(favoritesMapper::toFavoritesViewState)
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
+                started = SharingStarted.WhileSubscribed(5000),
                 initialValue = FavoritesViewState.EMPTY,
             )
 

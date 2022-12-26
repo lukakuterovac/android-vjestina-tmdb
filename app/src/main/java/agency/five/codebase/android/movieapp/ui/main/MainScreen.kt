@@ -5,9 +5,7 @@ import agency.five.codebase.android.movieapp.navigation.MOVIE_ID_KEY
 import agency.five.codebase.android.movieapp.navigation.MovieDetailsDestination
 import agency.five.codebase.android.movieapp.navigation.NavigationItem
 import agency.five.codebase.android.movieapp.ui.favorites.FavoritesRoute
-import agency.five.codebase.android.movieapp.ui.favorites.FavoritesViewModel
 import agency.five.codebase.android.movieapp.ui.home.HomeRoute
-import agency.five.codebase.android.movieapp.ui.home.HomeViewModel
 import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsRoute
 import agency.five.codebase.android.movieapp.ui.moviedetails.MovieDetailsViewModel
 import agency.five.codebase.android.movieapp.ui.theme.spacing
@@ -117,9 +115,7 @@ fun MainScreen() {
                     route = MovieDetailsDestination.route,
                     arguments = listOf(navArgument(MOVIE_ID_KEY) { type = NavType.IntType }),
                 ) {
-                    val movieId = it.arguments?.getInt(MOVIE_ID_KEY) ?: throw IllegalStateException(
-                        "Id is null!"
-                    )
+                    val movieId = it.arguments?.getInt(MOVIE_ID_KEY)
                     val viewModel = getViewModel<MovieDetailsViewModel>(
                         parameters = { parametersOf(movieId) }
                     )
@@ -129,6 +125,7 @@ fun MainScreen() {
         }
     }
 }
+
 
 @Composable
 private fun TopBar(
@@ -223,6 +220,6 @@ fun RowScope.AddItem(
 
 @Preview
 @Composable
-private fun MainScreenViewState() {
+private fun MainScreenPreview() {
     MainScreen()
 }

@@ -12,14 +12,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -175,11 +177,12 @@ fun MovieCrewGrid(
         horizontalArrangement = Arrangement.SpaceBetween,
         contentPadding = PaddingValues(MaterialTheme.spacing.medium)
     ) {
-        itemsIndexed(movieDetailsViewState.crew) { index, _ ->
-            CrewItem(
-                crewItemViewState = movieDetailsViewState.crew[index],
-                modifier = Modifier.padding(MaterialTheme.spacing.small)
-            )
+        items(
+            items = movieDetailsViewState.crew,
+            key = { crewman ->
+                crewman.hashCode()
+            }) { crewman ->
+            CrewItem(crewItemViewState = crewman)
         }
     }
 }
