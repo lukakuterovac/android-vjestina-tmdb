@@ -16,6 +16,7 @@ private const val SOCKET_TIMEOUT_MILLISECONDS = 100_000
 
 val networkModule = module {
     single<MovieService> { MovieServiceImpl(client = get()) }
+
     single {
         HttpClient(Android) {
             expectSuccess = true

@@ -8,8 +8,9 @@ import agency.five.codebase.android.movieapp.model.MovieCategory
 import agency.five.codebase.android.movieapp.model.MovieDetails
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+
+private const val STOP_TIMEOUT_MILIS = 1000L
 
 class MovieRepositoryImpl(
     private val movieService: MovieService,
@@ -39,7 +40,7 @@ class MovieRepositoryImpl(
                 }
             }.shareIn(
                 scope = CoroutineScope(bgDispatcher),
-                started = SharingStarted.WhileSubscribed(1000L),
+                started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILIS),
                 replay = 1
             )
         }
@@ -56,7 +57,7 @@ class MovieRepositoryImpl(
         }
     }.shareIn(
         scope = CoroutineScope(bgDispatcher),
-        started = SharingStarted.WhileSubscribed(1000L),
+        started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILIS),
         replay = 1
     )
 
@@ -108,4 +109,3 @@ class MovieRepositoryImpl(
         }
     }
 }
-

@@ -8,20 +8,23 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
+private const val APP_DATABASE_NAME = "app_database.db"
+
 val dataModule = module {
     single<MovieRepository> {
         MovieRepositoryImpl(get(), get(), Dispatchers.IO)
     }
 }
 
-private const val APP_DATABASE_NAME = "app_database.db"
-
 val databaseModule = module {
     single {
         Room.databaseBuilder(
             androidApplication(),
             MovieAppDatabase::class.java,
-            APP_DATABASE_NAME,
+            APP_DATABASE_NAME
         ).build()
+    }
+    single {
+        get<MovieAppDatabase>().getMovieDao()
     }
 }
