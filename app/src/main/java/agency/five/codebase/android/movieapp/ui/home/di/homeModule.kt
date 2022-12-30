@@ -8,10 +8,7 @@ import org.koin.dsl.module
 
 val homeModule = module {
     viewModel {
-        HomeViewModel(
-            movieRepository = get(),
-            homeScreenMapper = get()
-        )
+        HomeViewModel(get(), get())
     }
     single<HomeScreenMapper> { HomeScreenMapperImpl() }
 }

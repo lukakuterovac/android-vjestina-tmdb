@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.sp
 
 private const val DEGREES_IN_CIRCLE = 360f
 private const val CIRCLE_QUARTER_ANGLE = 90F
-private const val PERCENTAGE_FACTOR = 10f
 
 @Composable
 fun UserScoreProgressBar(
@@ -52,7 +51,7 @@ fun UserScoreProgressBar(
             )
         }
         Text(
-            text = (score * PERCENTAGE_FACTOR).toString(),
+            text = String.format("%.1f", score),
             color = Color.White,
             fontSize = 15.sp,
             modifier = Modifier
