@@ -29,6 +29,5 @@ class MovieApp : Application() {
                 databaseModule
             )
         }
-        Log.d("MovieApp", "App started")
     }
 }
